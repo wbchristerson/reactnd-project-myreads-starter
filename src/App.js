@@ -26,6 +26,7 @@ class Book extends React.Component {
   //     console.log("Shelf: ", state.shelf)
   //   }}
 
+
   render() {
     return (
       <li>
@@ -33,7 +34,7 @@ class Book extends React.Component {
           <div className="book-top">
             <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${this.props.coverURL})` }}></div>
             <div className="book-shelf-changer">
-              <select>
+              <select onChange={(event) => this.props.shelfChange(this.props.bookTitle, event.target.value)}>
                 <option value="none" disabled>Move to...</option>
                 <option value="currentlyReading">Currently Reading</option>
                 <option value="wantToRead">Want to Read</option>
@@ -60,7 +61,7 @@ class Shelf extends React.Component {
             {this.props.books
               .filter(book => book.status === this.props.category)
               .map((book) => (
-                <Book key={book.title} bookShelf={this.props.shelfTitle}
+                <Book key={book.title} bookShelf={this.props.shelfTitle} shelfChange={this.props.shelfChange}
                  bookTitle={book.title} bookAuthor={book.author} coverURL={book.url} repositionBooks={this.repositionBooks}/>
             ))}
           </ol>
@@ -140,6 +141,19 @@ class BooksApp extends React.Component {
   //     })
   //   }))
   // }
+  moveBook = (title, newShelf) => {
+    this.setState((prevState) => ({
+      heldBooks: prevState.heldBooks.map((newBook) => {
+        if (newBook.title === title) {
+          let entry = newBook
+          entry.status = newShelf
+          console.log("New Shelf: " + newShelf)
+          return entry
+        }
+        return newBook
+      })
+    }))
+  }
 
   render() {
     return (
@@ -172,9 +186,11 @@ class BooksApp extends React.Component {
             </div>
             <div className="list-books-content">
               <div>
-                <Shelf shelfTitle="Currently Reading" category="currentlyReading" books={this.state.heldBooks}/>
-                <Shelf shelfTitle="Want to Read" category="wantToRead" books={this.state.heldBooks}/>
-                <Shelf shelfTitle="Read" category="read" books={this.state.heldBooks}/>
+                <Shelf shelfTitle="Currently Reading" category="currentlyReading" books={this.state.heldBooks}
+                 shelfChange={this.moveBook}/>
+                <Shelf shelfTitle="Want to Read" category="wantToRead" books={this.state.heldBooks}
+                 shelfChange={this.moveBook}/>
+                <Shelf shelfTitle="Read" category="read" books={this.state.heldBooks} shelfChange={this.moveBook}/>
               </div>
             </div>
             <div className="open-search">
