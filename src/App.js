@@ -3,9 +3,14 @@ import React from 'react'
 import './App.css'
 
 class Book extends React.Component {
-  // state = {
-  //   shelf: ''
+  // constructor(props) {
+  //   super(props);
+  //   this.state = {value: {props.bookShelf}};
   // }
+  state = {
+    value: this.props.bookShelf
+  }
+
   //
   // componentWillMount() {
   //   this.setState({
@@ -26,6 +31,15 @@ class Book extends React.Component {
   //     console.log("Shelf: ", state.shelf)
   //   }}
 
+  // shelfUpdate = (event) => {
+  //
+  //   this.props.shelfChange(this.props.bookTitle, event.target.value)
+  // }
+
+  handleChange(event) {
+    this.setState({value: event.target.value})
+    this.props.shelfChange(this.props.bookTitle, event.target.value)
+  }
 
   render() {
     return (
@@ -34,7 +48,7 @@ class Book extends React.Component {
           <div className="book-top">
             <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${this.props.coverURL})` }}></div>
             <div className="book-shelf-changer">
-              <select onChange={(event) => this.props.shelfChange(this.props.bookTitle, event.target.value)}>
+              <select value={this.state.value} onChange={(event) => this.handleChange(event)}>
                 <option value="none" disabled>Move to...</option>
                 <option value="currentlyReading">Currently Reading</option>
                 <option value="wantToRead">Want to Read</option>
@@ -61,7 +75,7 @@ class Shelf extends React.Component {
             {this.props.books
               .filter(book => book.status === this.props.category)
               .map((book) => (
-                <Book key={book.title} bookShelf={this.props.shelfTitle} shelfChange={this.props.shelfChange}
+                <Book key={book.title} bookShelf={this.props.category} shelfChange={this.props.shelfChange}
                  bookTitle={book.title} bookAuthor={book.author} coverURL={book.url} repositionBooks={this.repositionBooks}/>
             ))}
           </ol>
@@ -147,7 +161,6 @@ class BooksApp extends React.Component {
         if (newBook.title === title) {
           let entry = newBook
           entry.status = newShelf
-          console.log("New Shelf: " + newShelf)
           return entry
         }
         return newBook
