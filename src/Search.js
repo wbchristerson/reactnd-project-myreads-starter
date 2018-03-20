@@ -39,6 +39,7 @@ class Search extends Component {
     //     })
     //   }
     // }
+    // BooksAPI.getAll().then((result) => console.log(result))
   }
 
   updateQuery = (query) => {
@@ -73,10 +74,15 @@ class Search extends Component {
             {this.state.books.map((book) => (
                 <Book
                   key={book.id}
+                  bookId={book.id}
                   title={book.title}
                   author={(book.hasOwnProperty("authors") ? book.authors.join(", ") : "")}
                   url={(book.hasOwnProperty("imageLinks") && book.imageLinks.hasOwnProperty("thumbnail") ?
-                        book.imageLinks.thumbnail : "")}/>
+                        book.imageLinks.thumbnail : "")}
+                  moveToNewShelf={this.props.moveToNewShelf}
+                  updateRecord={this.props.updateRecord}
+                  shelfData={this.props.shelfData}
+                />
               )
             )}
           </ol>

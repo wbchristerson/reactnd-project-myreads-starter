@@ -1,9 +1,11 @@
 import React from 'react'
 import Shelf from './Shelf'
 import { Link } from 'react-router-dom'
+// import * as BooksAPI from './BooksAPI'
 
 class Shelves extends React.Component {
   state = {
+    allBooks: [],
     currentlyReading: [
       {
         title: "To Kill a Mockingbird",
@@ -47,7 +49,23 @@ class Shelves extends React.Component {
     ]
   }
 
+  // componentDidUpdate(prevProps, prevState) {
+  //   BooksAPI.getAll().then((collectedBooks) => {
+  //     this.setState({
+  //       allBooks: collectedBooks,
+  //       currentlyReading: collectedBooks.filter((book) => (book.shelf === "currentlyReading")),
+  //       wantToRead: collectedBooks.filter((book) => (book.shelf === "wantToRead")),
+  //       read: collectedBooks.filter((book) => book.shelf === "read")
+  //     })
+  //     this.props.acquireBooks(collectedBooks)
+  //     console.log("Currently Reading: ", this.state.currentlyReading)
+  //   })
+  // }
+
   render() {
+    let currentlyReading = this.state.allBooks.filter((book) => (book.shelf === "currentlyReading"))
+    let wantToRead = this.state.allBooks.filter((book) => (book.shelf === "wantToRead"))
+    let read = this.state.allBooks.filter((book) => (book.shelf === "read"))
     return (
       <div className="list-books">
         <div className="list-books-title">
@@ -55,9 +73,33 @@ class Shelves extends React.Component {
         </div>
         <div className="list-books-content">
           <div>
-            <Shelf sectionTitle="Currently Reading" bookRow={this.state.currentlyReading}/>
-            <Shelf sectionTitle="Want to Read" bookRow={this.state.wantToRead}/>
-            <Shelf sectionTitle="Read" bookRow={this.state.read}/>
+            <Shelf
+              bookRow={currentlyReading}
+              acquireBooks={this.props.acquireBooks}
+              moveToNewShelf={this.props.moveToNewShelf}
+              shelfData={this.props.shelfData}
+              sectionTitle="Currently Reading"
+              shelfType="currentlyReading"
+              updateRecord={this.props.updateRecord}
+            />
+            <Shelf
+              bookRow={wantToRead}
+              acquireBooks={this.props.acquireBooks}
+              moveToNewShelf={this.props.moveToNewShelf}
+              shelfData={this.props.shelfData}
+              sectionTitle="Want to Read"
+              shelfType="wantToRead"
+              updateRecord={this.props.updateRecord}
+            />
+            <Shelf
+              bookRow={read}
+              acquireBooks={this.props.acquireBooks}
+              moveToNewShelf={this.props.moveToNewShelf}
+              shelfData={this.props.shelfData}
+              sectionTitle="Read"
+              shelfType="read"
+              updateRecord={this.props.updateRecord}
+            />
           </div>
         </div>
         <div className="open-search">
