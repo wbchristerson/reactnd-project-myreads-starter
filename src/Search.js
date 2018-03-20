@@ -10,57 +10,34 @@ class Search extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    // console.log("Previous Query: " + prevState.query)
-    // console.log("Current Query: " + this.state.query)
     if (this.state.query !== prevState.query) {
       if (this.state.query.trim() === '') {
         this.setState( { books: [] })
       }
       else {
+        console.log("Query: ", this.state.query.length)
         BooksAPI.search(this.state.query.trim())
         .then((booksFound) => {
           this.setState( { books: booksFound })
-          // console.log("Books: ", booksFound)
         })
         .catch(() => {
           this.setState( { books: [] })
         })
       }
-      // BooksAPI.search('arc').then((booksFound) => this.setState({ books: booksFound })).catch(console.log("This failed."))
     }
-    // if (!((this.state.query === prevState.query) && (this.state.books === prevState.books))) {
-    //   if (this.state.query !== '') {
-    //     BooksAPI.search(this.state.query).then((booksFound) => {
-    //       this.setState( { books: booksFound } )
-    //     }).catch(console.log("no"))
-    //   } else {
-    //     this.setState({
-    //       books: []
-    //     })
-    //   }
-    // }
-    // BooksAPI.getAll().then((result) => console.log(result))
   }
 
   updateQuery = (query) => {
     this.setState({ query: query})
-    // this.setState({ query: query.trim() })
   }
 
   render() {
+    console.log(this.state.query)
     return (
       <div className="search-books">
         <div className="search-books-bar">
           <Link className="close-search" to="/">Close</Link>
           <div className="search-books-input-wrapper">
-            {/*
-              NOTES: The search from BooksAPI is limited to a particular set of search terms.
-              You can find these search terms here:
-              https://github.com/udacity/reactnd-project-myreads-starter/blob/master/SEARCH_TERMS.md
-
-              However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
-              you don't find a specific author or title. Every search is limited by search terms.
-            */}
             <input
               type="text"
               placeholder="Search by title or author"
@@ -73,15 +50,15 @@ class Search extends Component {
           <ol className="books-grid">
             {this.state.books.map((book) => (
                 <Book
+                  help={book}
                   key={book.id}
                   bookId={book.id}
                   title={book.title}
                   author={(book.hasOwnProperty("authors") ? book.authors.join(", ") : "")}
                   url={(book.hasOwnProperty("imageLinks") && book.imageLinks.hasOwnProperty("thumbnail") ?
                         book.imageLinks.thumbnail : "")}
-                  moveToNewShelf={this.props.moveToNewShelf}
-                  updateRecord={this.props.updateRecord}
-                  shelfData={this.props.shelfData}
+                  updateBookData={this.props.updateBookData}
+                  bookData={this.props.bookData}
                 />
               )
             )}

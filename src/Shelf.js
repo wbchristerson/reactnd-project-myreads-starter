@@ -1,8 +1,6 @@
 import React, { Component } from 'react'
 import Book from './Book'
 
-// bookId is necessary
-
 class Shelf extends Component {
   render() {
     return (
@@ -10,19 +8,18 @@ class Shelf extends Component {
         <h2 className="bookshelf-title">{this.props.sectionTitle}</h2>
         <div className="bookshelf-books">
           <ol className="books-grid">
-            {this.props.shelfData
+            {this.props.bookData
               .filter((shelfBook) => (this.props.shelfType === shelfBook.shelf))
               .map((book) => (
                 <Book
-                  key={book.title}
+                  key={book.id}
                   bookId={book.id}
                   title={book.title}
                   author={(book.hasOwnProperty("authors") ? book.authors.join(", ") : "")}
                   url={(book.hasOwnProperty("imageLinks") && book.imageLinks.hasOwnProperty("thumbnail") ?
                         book.imageLinks.smallThumbnail : "")}
-                  moveToNewShelf={this.props.moveToNewShelf}
-                  updateRecord={this.props.updateRecord}
-                  shelfData={this.props.shelfData}
+                  updateBookData={this.props.updateBookData}
+                  bookData={this.props.bookData}
                 />
               )
             )}
