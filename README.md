@@ -1,4 +1,4 @@
-# MyReads Project
+# MyReads
 
 This application keeps track of a user's book selections from a static database on a server. The user may query certain topics (see `SEARCH_TERMS.md`) and then select books from the search results to appear on one of three shelves on the main page: "Currently Reading", "Want To Read", and "Read".
 
@@ -15,7 +15,7 @@ Main Page:
 
 Search Page:
 <p align="center">
-  <img src="img/searcg-page.png" alt="Search Page Sample">
+  <img src="img/search-page.png" alt="Search Page Sample">
 </p>
 
 ## Running The Application
