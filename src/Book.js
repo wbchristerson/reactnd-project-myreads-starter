@@ -29,7 +29,7 @@ class Book extends Component {
       id: this.props.bookId,
       shelf: "none",
       title: this.props.title,
-      author: this.props.author,
+      authors: this.props.authors,
       url: this.props.url
     })
   }
@@ -41,7 +41,7 @@ class Book extends Component {
       id: newBookObj.id,
       shelf: newShelf,
       title: newBookObj.title,
-      author: newBookObj.author,
+      authors: newBookObj.authors,
       url: newBookObj.url
     }
     if ((matchedBookObjs.length !== 0) && (newShelf !== "none")) {
