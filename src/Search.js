@@ -9,26 +9,71 @@ class Search extends Component {
     books: []
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    if (this.state.query !== prevState.query) {
-      if (this.state.query.trim() === '') {
-        this.setState( { books: [] })
-      }
-      else {
-        BooksAPI.search(this.state.query.trim())
-        .then((booksFound) => {
-          this.setState( { books: booksFound })
+  // componentDidUpdate(prevProps, prevState) {
+  //   if (this.state.query !== prevState.query) {
+  //     if (this.state.query.trim() === '') {
+  //       this.setState( { books: [] })
+  //     }
+  //     else {
+  //       BooksAPI.search(this.state.query.trim())
+  //       .then((booksFound) => {
+  //         this.setState( { books: booksFound })
+  //       })
+  //       .catch(() => {
+  //         this.setState( { books: [] })
+  //       })
+  //     }
+  //   }
+  // }
+
+  handleSearch = (q) => {
+    this.setState({
+      query: q
+    })
+    if (q === '') {
+      this.setState({
+        books: []
+      })
+    } else {
+      console.log("Test 1")
+      BooksAPI.search(q)
+      .then((booksFound) => {
+        console.log("Test 2")
+        this.setState({
+          books: booksFound
         })
-        .catch(() => {
-          this.setState( { books: [] })
+      })
+      .catch(() => {
+        this.setState({
+          books: []
         })
-      }
+      })
+      console.log("This: ", this)
     }
   }
 
-  updateQuery = (query) => {
-    this.setState({ query: query})
+  debounce = (func, wait, immediate) => {
+  	var timeout;
+  	return function() {
+  		var context = this, args = arguments;
+  		var later = function() {
+  			timeout = null;
+  			if (!immediate) func.apply(context, args);
+  		};
+  		var callNow = immediate && !timeout;
+  		clearTimeout(timeout);
+  		timeout = setTimeout(later, wait);
+  		if (callNow) func.apply(context, args);
+  	};
   }
+
+  slowSearch = this.debounce(this.handleSearch, 30)
+
+  // myEfficientFn = (q) => {
+  //   debounce(function() {
+  //     this.handleSearch(q)
+  //   }, 250);
+  // }
 
   // if the book is on a shelf, return its shelf, otherwise return "none"
   getShelfState(book) {
@@ -38,6 +83,8 @@ class Search extends Component {
     }
     return "none"
   }
+
+  // onChange={() => this.handleSearch(this.textInput.value)}
 
   render() {
     return (
@@ -49,7 +96,8 @@ class Search extends Component {
               type="text"
               placeholder="Search by title or author"
               value={this.state.query}
-              onChange={(event) => this.updateQuery(event.target.value)}
+              ref={(input) => { this.textInput = input; }}
+              onChange={() => this.slowSearch(this.textInput.value)}
             />
           </div>
         </div>
@@ -57,7 +105,6 @@ class Search extends Component {
           <ol className="books-grid">
             {this.state.books.map((book) => (
                 <Book
-                  help={book}
                   key={book.id}
                   bookId={book.id}
                   title={book.title}

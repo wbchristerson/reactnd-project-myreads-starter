@@ -6,15 +6,6 @@ class Book extends Component {
     shelf: 'none'
   }
 
-  // componentWillMount() {
-  //   let commonBooks = this.props.bookObjData.filter((book) => (book.id === this.props.bookId))
-  //   if ((commonBooks.length === 1) && (this.state.shelf !== commonBooks[0].shelf)) {
-  //     this.setState({
-  //       shelf: commonBooks[0].shelf
-  //     })
-  //   }
-  // }
-
   componentDidMount() {
     this.setState({
       shelf: this.props.shelf
@@ -52,22 +43,10 @@ class Book extends Component {
           return repObj
         }
       })
-      // this.setState((prevState) => ({
-      //   bookObjData: prevState.bookObjData.map((bookObj) => {
-      //     if (newBookObj.id !== newBookObj.id) {
-      //       return bookObj
-      //     } else {
-      //       return repObj
-      //     }
-      //   })
-      // }))
     } else if ((matchedBookObjs.length !== 0) && (newShelf === "none")) {
       data = data.filter((bookObj) => (bookObj.id !== newBookObj.id))
     } else {
       data.push(repObj)
-      // this.setState((prevState) => ({
-      //   bookObjData: prevState.bookObjData.push(repObj)
-      // }))
     }
     this.props.updateAppState(this.props.appRef, data)
     BooksAPI.get(newBookObj.id)
