@@ -30,6 +30,15 @@ class Search extends Component {
     this.setState({ query: query})
   }
 
+  // if the book is on a shelf, return its shelf, otherwise return "none"
+  getShelfState(book) {
+    let matchingBooks = this.props.bookObjData.filter((bookObj) => (bookObj.id === book.id))
+    if ((matchingBooks.length !== 0) && (matchingBooks[0].hasOwnProperty("shelf"))) {
+      return matchingBooks[0].shelf
+    }
+    return "none"
+  }
+
   render() {
     return (
       <div className="search-books">
@@ -52,11 +61,13 @@ class Search extends Component {
                   key={book.id}
                   bookId={book.id}
                   title={book.title}
+                  shelf={this.getShelfState(book)}
                   author={(book.hasOwnProperty("authors") ? book.authors.join(", ") : "")}
                   url={(book.hasOwnProperty("imageLinks") && book.imageLinks.hasOwnProperty("thumbnail") ?
                         book.imageLinks.thumbnail : "")}
-                  updateBookData={this.props.updateBookData}
-                  bookData={this.props.bookData}
+                  updateAppState={this.props.updateAppState}
+                  bookObjData={this.props.bookObjData}
+                  appRef={this.props.appRef}
                 />
               )
             )}

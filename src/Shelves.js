@@ -29,8 +29,9 @@ function Shelves(props) {
               key={shelf.sectionTitle}
               sectionTitle={shelf.sectionTitle}
               shelfType={shelf.shelfType}
-              bookData={props.bookData}
-              updateBookData={props.updateBookData}
+              bookObjData={props.bookObjData}
+              updateAppState={props.updateAppState}
+              appRef={props.appRef}
             />
           ))}
         </div>

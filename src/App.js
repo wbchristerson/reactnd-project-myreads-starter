@@ -13,34 +13,66 @@ import './App.css'
 class BooksApp extends React.Component {
   state = {
     currentPage: '/', // '/', '/search'
-    bookData: []
+    bookObjData: [] // array of abridged book objects including attributes for id, shelf, title, author, and image url
   }
 
   componentDidMount() {
     BooksAPI.getAll()
     .then((collectedBooks) => {
       this.setState({
-        bookData: collectedBooks
+        bookObjData: collectedBooks.map((book) => (
+          {
+            id: book.id,
+            shelf: (book.hasOwnProperty("shelf") ? book.shelf : "none"),
+            title: book.title,
+            author: (book.hasOwnProperty("authors") ? book.authors.join(", ") : ""),
+            url: ((book.hasOwnProperty("imageLinks") && book.imageLinks.hasOwnProperty("thumbnail")) ?
+                   book.imageLinks.thumbnail : "")
+          }
+        ))
       })
     })
   }
 
-  updateBookData = () => {
-    BooksAPI.getAll().then((collectedBooks) => {
-      this.setState({
-        bookData: collectedBooks
-      })
+  // I needed a way to include the App instance itself and I had some trouble understanding how to bind correctly
+  updateState(obj, data) {
+    obj.setState({
+      bookObjData: data
     })
   }
+
+  // handleChange(event) {
+  //   let newShelf = event.target.value
+  //   let book
+  //   BooksAPI.get(this.props.bookId)
+  //   .then((foundBook) => {
+  //     book = foundBook
+  //   })
+  //   .then(() => {
+  //     let matchedBooks = this.props.bookData.filter((newBook) => (newBook.id === book.id))
+  //     if ((matchedBooks.length === 0) || (matchedBooks[0].shelf !== newShelf)) {
+  //       this.setState({
+  //         shelf: newShelf
+  //       })
+  //       BooksAPI.update(book, newShelf)
+  //       .then(() => {
+  //         this.props.updateBookData(book, newShelf)
+  //       })
+  //       .catch(console.log("There was an inner failure."))
+  //     }
+  //   })
+  //   .catch(console.log("There was an outer failure."))
+  // }
+
 
   render() {
     return (
       <div className="app">
         <Route exact path="/" render={() => (
-          <Shelves updateBookData={this.updateBookData} bookData={this.state.bookData}/>
+          <Shelves appRef={this} updateAppState={this.updateState} bookObjData={this.state.bookObjData}/>
         )}/>
         <Route path="/search" render={() => (
-          <Search updateBookData={this.updateBookData} bookData={this.state.bookData}/>
+          <Search appRef={this} updateAppState={this.updateState} bookObjData={this.state.bookObjData}/>
         )}/>
       </div>
     )

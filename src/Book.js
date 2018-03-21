@@ -6,36 +6,74 @@ class Book extends Component {
     shelf: 'none'
   }
 
-  handleChange(event) {
-    let newShelf = event.target.value
-    let book
-    BooksAPI.get(this.props.bookId)
-    .then((foundBook) => {
-      book = foundBook
+  // componentWillMount() {
+  //   let commonBooks = this.props.bookObjData.filter((book) => (book.id === this.props.bookId))
+  //   if ((commonBooks.length === 1) && (this.state.shelf !== commonBooks[0].shelf)) {
+  //     this.setState({
+  //       shelf: commonBooks[0].shelf
+  //     })
+  //   }
+  // }
+
+  componentDidMount() {
+    this.setState({
+      shelf: this.props.shelf
     })
-    .then(() => {
-      let matchedBooks = this.props.bookData.filter((newBook) => (newBook.id === book.id))
-      if ((matchedBooks.length === 0) || (matchedBooks[0].shelf !== newShelf)) {
-        this.setState({
-          shelf: newShelf
-        })
-        BooksAPI.update(book, newShelf)
-        .then(() => {
-          this.props.updateBookData()
-        })
-        .catch(console.log("There was an inner failure."))
-      }
-    })
-    .catch(console.log("There was an outer failure."))
   }
 
-  componentWillMount() {
-    let commonBooks = this.props.bookData.filter((book) => (book.id === this.props.bookId))
-    if ((commonBooks.length === 1) && (this.state.shelf !== commonBooks[0].shelf)) {
-      this.setState({
-        shelf: commonBooks[0].shelf
-      })
+  updateBookDataFromBook(newShelf) {
+    this.setState({
+      shelf: newShelf
+    })
+    this.updateBookData(newShelf, {
+      id: this.props.bookId,
+      shelf: "none",
+      title: this.props.title,
+      author: this.props.author,
+      url: this.props.url
+    })
+  }
+
+  updateBookData(newShelf, newBookObj) {
+    let data = this.props.bookObjData
+    let matchedBookObjs = data.filter((bookObj) => (bookObj.id === newBookObj.id))
+    let repObj = {
+      id: newBookObj.id,
+      shelf: newShelf,
+      title: newBookObj.title,
+      author: newBookObj.author,
+      url: newBookObj.url
     }
+    if ((matchedBookObjs.length !== 0) && (newShelf !== "none")) {
+      data = data.map((bookObj) => {
+        if (newBookObj.id !== bookObj.id) {
+          return bookObj
+        } else {
+          return repObj
+        }
+      })
+      // this.setState((prevState) => ({
+      //   bookObjData: prevState.bookObjData.map((bookObj) => {
+      //     if (newBookObj.id !== newBookObj.id) {
+      //       return bookObj
+      //     } else {
+      //       return repObj
+      //     }
+      //   })
+      // }))
+    } else if ((matchedBookObjs.length !== 0) && (newShelf === "none")) {
+      data = data.filter((bookObj) => (bookObj.id !== newBookObj.id))
+    } else {
+      data.push(repObj)
+      // this.setState((prevState) => ({
+      //   bookObjData: prevState.bookObjData.push(repObj)
+      // }))
+    }
+    this.props.updateAppState(this.props.appRef, data)
+    BooksAPI.get(newBookObj.id)
+    .then((foundBook) => {
+      BooksAPI.update(foundBook, newShelf)
+    })
   }
 
   render() {
@@ -45,7 +83,7 @@ class Book extends Component {
           <div className="book-top">
             <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${this.props.url})` }}></div>
             <div className="book-shelf-changer">
-              <select value={this.state.shelf} onChange={(event) => this.handleChange(event)}>
+              <select value={this.state.shelf} onChange={(event) => (this.updateBookDataFromBook(event.target.value))}>
                 <option value="null" disabled>Move to...</option>
                 <option value="currentlyReading">Currently Reading</option>
                 <option value="wantToRead">Want to Read</option>
