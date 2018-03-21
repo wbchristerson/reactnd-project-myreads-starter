@@ -3,6 +3,20 @@ import Shelf from './Shelf'
 import { Link } from 'react-router-dom'
 
 function Shelves(props) {
+  let shelfCategories = [
+    {
+      sectionTitle: "Currently Reading",
+      shelfType: "currentlyReading"
+    },
+    {
+      sectionTitle: "Want to Read",
+      shelfType: "wantToRead"
+    },
+    {
+      sectionTitle: "Read",
+      shelfType: "read"
+    }
+  ]
   return (
     <div className="list-books">
       <div className="list-books-title">
@@ -10,24 +24,14 @@ function Shelves(props) {
       </div>
       <div className="list-books-content">
         <div>
-          <Shelf
-            sectionTitle="Currently Reading"
-            shelfType="currentlyReading"
-            bookData={props.bookData}
-            updateBookData={props.updateBookData}
-          />
-          <Shelf
-            sectionTitle="Want to Read"
-            shelfType="wantToRead"
-            bookData={props.bookData}
-            updateBookData={props.updateBookData}
-          />
-          <Shelf
-            sectionTitle="Read"
-            shelfType="read"
-            bookData={props.bookData}
-            updateBookData={props.updateBookData}
-          />
+          {shelfCategories.map((shelf) => (
+            <Shelf
+              sectionTitle={shelf.sectionTitle}
+              shelfType={shelf.shelfType}
+              bookData={props.bookData}
+              updateBookData={props.updateBookData}
+            />
+          ))}
         </div>
       </div>
       <div className="open-search">
