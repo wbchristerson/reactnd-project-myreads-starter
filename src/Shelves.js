@@ -26,6 +26,7 @@ function Shelves(props) {
         <div>
           {shelfCategories.map((shelf) => (
             <Shelf
+              key={shelf.sectionTitle}
               sectionTitle={shelf.sectionTitle}
               shelfType={shelf.shelfType}
               bookData={props.bookData}
