@@ -13,6 +13,11 @@ Main Page:
   <img src="img/main-page.png" alt="Main Page Sample">
 </p>
 
+Search Page:
+<p align="center">
+  <img src="img/searcg-page.png" alt="Search Page Sample">
+</p>
+
 ## Running The Application
 To download, you can clone the repository using this terminal command:
 ```
