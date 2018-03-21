@@ -62,7 +62,7 @@ class Search extends Component {
                   bookId={book.id}
                   title={book.title}
                   shelf={this.getShelfState(book)}
-                  author={(book.hasOwnProperty("authors") ? book.authors.join(", ") : "")}
+                  authors={(book.hasOwnProperty("authors") ? book.authors.join(", ") : "")}
                   url={(book.hasOwnProperty("imageLinks") && book.imageLinks.hasOwnProperty("thumbnail") ?
                         book.imageLinks.thumbnail : "")}
                   updateAppState={this.props.updateAppState}

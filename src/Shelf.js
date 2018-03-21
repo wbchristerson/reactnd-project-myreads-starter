@@ -15,7 +15,7 @@ function Shelf(props) {
                 bookId={book.id}
                 title={book.title}
                 shelf={props.shelfType}
-                author={(book.hasOwnProperty("authors") ? book.authors.join(", ") : "")}
+                authors={(book.hasOwnProperty("authors") ? book.authors : "")}
                 url={book.url}
                 updateAppState={props.updateAppState}
                 bookObjData={props.bookObjData}

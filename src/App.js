@@ -25,7 +25,7 @@ class BooksApp extends React.Component {
             id: book.id,
             shelf: (book.hasOwnProperty("shelf") ? book.shelf : "none"),
             title: book.title,
-            author: (book.hasOwnProperty("authors") ? book.authors.join(", ") : ""),
+            authors: (book.hasOwnProperty("authors") ? book.authors.join(", ") : ""),
             url: ((book.hasOwnProperty("imageLinks") && book.imageLinks.hasOwnProperty("thumbnail")) ?
                    book.imageLinks.thumbnail : "")
           }
@@ -34,7 +34,7 @@ class BooksApp extends React.Component {
     })
   }
 
-  // I needed a way to include the App instance itself and I had some trouble understanding how to bind correctly
+  // I needed a way to include the App instance itself and I had some trouble understanding how to bind 'this' correctly
   updateState(obj, data) {
     obj.setState({
       bookObjData: data
