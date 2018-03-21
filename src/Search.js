@@ -9,23 +9,6 @@ class Search extends Component {
     books: []
   }
 
-  // componentDidUpdate(prevProps, prevState) {
-  //   if (this.state.query !== prevState.query) {
-  //     if (this.state.query.trim() === '') {
-  //       this.setState( { books: [] })
-  //     }
-  //     else {
-  //       BooksAPI.search(this.state.query.trim())
-  //       .then((booksFound) => {
-  //         this.setState( { books: booksFound })
-  //       })
-  //       .catch(() => {
-  //         this.setState( { books: [] })
-  //       })
-  //     }
-  //   }
-  // }
-
   handleSearch = (q) => {
     this.setState({
       query: q
@@ -35,10 +18,8 @@ class Search extends Component {
         books: []
       })
     } else {
-      console.log("Test 1")
       BooksAPI.search(q)
       .then((booksFound) => {
-        console.log("Test 2")
         this.setState({
           books: booksFound
         })
@@ -48,34 +29,10 @@ class Search extends Component {
           books: []
         })
       })
-      console.log("This: ", this)
     }
   }
 
-  debounce = (func, wait, immediate) => {
-  	var timeout;
-  	return function() {
-  		var context = this, args = arguments;
-  		var later = function() {
-  			timeout = null;
-  			if (!immediate) func.apply(context, args);
-  		};
-  		var callNow = immediate && !timeout;
-  		clearTimeout(timeout);
-  		timeout = setTimeout(later, wait);
-  		if (callNow) func.apply(context, args);
-  	};
-  }
-
-  slowSearch = this.debounce(this.handleSearch, 30)
-
-  // myEfficientFn = (q) => {
-  //   debounce(function() {
-  //     this.handleSearch(q)
-  //   }, 250);
-  // }
-
-  // if the book is on a shelf, return its shelf, otherwise return "none"
+  // If the book is on a shelf, return its shelf, otherwise return "none".
   getShelfState(book) {
     let matchingBooks = this.props.bookObjData.filter((bookObj) => (bookObj.id === book.id))
     if ((matchingBooks.length !== 0) && (matchingBooks[0].hasOwnProperty("shelf"))) {
@@ -84,8 +41,9 @@ class Search extends Component {
     return "none"
   }
 
-  // onChange={() => this.handleSearch(this.textInput.value)}
-
+  /* I attempted to use the debounce method described by the previous reviewer, but I was not satisfied with how slow the
+   * interactions were with the search page. I set the book search results to an empty array when the query is '' but the
+   * problem of search results remaining when completely deleting a search item in a single key stroke persists. */
   render() {
     return (
       <div className="search-books">
@@ -97,7 +55,7 @@ class Search extends Component {
               placeholder="Search by title or author"
               value={this.state.query}
               ref={(input) => { this.textInput = input; }}
-              onChange={() => this.slowSearch(this.textInput.value)}
+              onChange={() => this.handleSearch(this.textInput.value)}
             />
           </div>
         </div>

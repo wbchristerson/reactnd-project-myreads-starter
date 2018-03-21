@@ -41,30 +41,6 @@ class BooksApp extends React.Component {
     })
   }
 
-  // handleChange(event) {
-  //   let newShelf = event.target.value
-  //   let book
-  //   BooksAPI.get(this.props.bookId)
-  //   .then((foundBook) => {
-  //     book = foundBook
-  //   })
-  //   .then(() => {
-  //     let matchedBooks = this.props.bookData.filter((newBook) => (newBook.id === book.id))
-  //     if ((matchedBooks.length === 0) || (matchedBooks[0].shelf !== newShelf)) {
-  //       this.setState({
-  //         shelf: newShelf
-  //       })
-  //       BooksAPI.update(book, newShelf)
-  //       .then(() => {
-  //         this.props.updateBookData(book, newShelf)
-  //       })
-  //       .catch(console.log("There was an inner failure."))
-  //     }
-  //   })
-  //   .catch(console.log("There was an outer failure."))
-  // }
-
-
   render() {
     return (
       <div className="app">
