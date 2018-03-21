@@ -41,6 +41,12 @@ class Search extends Component {
     return "none"
   }
 
+  /* Note: I originally used a function that was the implementation of the debounce function as taken from Underscore.js, appearing at
+   * this page: https://davidwalsh.name/javascript-debounce-function, as recommended by the first reviewer of this project. This function
+   * (and this function only) is taken straight from the above mentioned site. The full credit for its usage goes to Underscore.js
+   * and the blog owner.
+   */
+
   /* I attempted to use the debounce method described by the previous reviewer, but I was not satisfied with how slow the
    * interactions were with the search page. I set the book search results to an empty array when the query is '' but the
    * problem of search results remaining when completely deleting a search item in a single key stroke persists. */
