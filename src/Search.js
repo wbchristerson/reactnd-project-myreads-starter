@@ -15,7 +15,6 @@ class Search extends Component {
         this.setState( { books: [] })
       }
       else {
-        console.log("Query: ", this.state.query.length)
         BooksAPI.search(this.state.query.trim())
         .then((booksFound) => {
           this.setState( { books: booksFound })
@@ -32,7 +31,6 @@ class Search extends Component {
   }
 
   render() {
-    console.log(this.state.query)
     return (
       <div className="search-books">
         <div className="search-books-bar">

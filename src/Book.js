@@ -15,7 +15,6 @@ class Book extends Component {
     })
     .then(() => {
       let matchedBooks = this.props.bookData.filter((newBook) => (newBook.id === book.id))
-      console.log("TEST: ", matchedBooks.length)
       if ((matchedBooks.length === 0) || (matchedBooks[0].shelf !== newShelf)) {
         this.setState({
           shelf: newShelf
