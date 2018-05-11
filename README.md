@@ -29,7 +29,7 @@ Alternatively, follow the instructions below to download to a hard drive:
 * Find the folder `reactnd-project-myreads-starter` in your Downloads folder or wherever it was placed on your device.
 * Right click and choose "Extract All".
 
-To run the application, you will need to have `npm` installed. See [here](https://www.npmjs.com/get-npm) for installation information. Upon downloading both get started developing both `npm` and the project direction, install all project dependencies by running `npm install` from within the project directory. Afterwards, start the development server with `npm start`.
+To run the application, you will need to have `npm` installed. See [here](https://www.npmjs.com/get-npm) for installation information. Upon downloading both `npm` and the project directory, install all project dependencies by running the command `npm install` from the project directory. Afterwards, start the development server with the command `npm start`.
 
 ## Important
 The backend API uses a fixed set of cached search results and is limited to a particular set of search terms, which can be found in [SEARCH_TERMS.md](SEARCH_TERMS.md). That list of terms are the _only_ terms that will work with the backend. Other searches will not yield valid results.
